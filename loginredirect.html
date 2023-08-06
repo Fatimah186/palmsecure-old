@@ -1,0 +1,47 @@
+<!-- studentprofile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+</head>
+<body>
+    <div id="studentDetails">
+        <p>Email: <span id="email"></span></p>
+        <!-- Display other student details here -->
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyAk0foljioWF7Yde0GihotbmzW_bUxLPlw",
+      authDomain: "registrationform-e4460.firebaseapp.com",
+      databaseURL: "https://registrationform-e4460-default-rtdb.firebaseio.com",
+      projectId: "registrationform-e4460",
+      storageBucket: "registrationform-e4460.appspot.com",
+      messagingSenderId: "899025377950",
+      appId: "1:899025377950:web:d9d3fb4b97edb022aab98f",
+      measurementId: "G-HJPSD2JERL"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the database
+        var database = firebase.database();
+
+        // Extract the email from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get("email");
+
+        // Display the email on the page
+        document.getElementById("name").textContent = student.name;
+                document.getElementById("year").textContent = student.year;
+                document.getElementById("department").textContent = student.department;
+                document.getElementById("regNumber").textContent = student.regNumber;
+                document.getElementById("phone").textContent = student.phone;
+        document.getElementById("email").textContent = email;
+    </script>
+</body>
+</html>

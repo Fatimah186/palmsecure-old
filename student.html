@@ -51,7 +51,7 @@
         <div class="login-box">
           <input type="email" class="email ele" placeholder="youremail@example.com" name="username" required>
           <input type="password" class="password ele" placeholder="password" name="password" required>
-          <button type="submit" id="loginBtn"  class="clkbtn">Login</button>
+          <button type="button" id="loginBtn"  class="clkbtn" onclick="loginUser()">Login</button>
         </div>
       </form>
       <!-- signup form -->
@@ -166,34 +166,26 @@ loginBtn.addEventListener("click", function(event) {
 
 function loginUser() {
     // Retrieve the email and password entered by the user
-const email = document.querySelector("#loginForm input[name='email']").value;
-const password = document.querySelector("#loginForm input[name='password']").value;
+    const email = document.querySelector("#loginForm input[name='username']").value;
+    const password = document.querySelector("#loginForm input[name='password']").value;
 
-// Query the database to find a student with the matching email and password
-database.ref('students').orderByChild('email').equalTo(email).once('value', (snapshot) => {
-    const students = snapshot.val();
+    // Query the database to find a student with the matching email and password
+    database.ref('students').orderByChild('email').equalTo(email).once('value', (snapshot) => {
+        const students = snapshot.val();
 
-    // Check if any student with the given email exists
-    if (students) {
-        // Find the student with the given email
-        const studentKey = Object.keys(students)[0];
-        const student = students[studentKey];
-
-        // Check if the password matches
-        if (student.pwd === password) {
-            // Redirect to the student profile page with the corresponding student key as a URL parameter
-            window.location.href = `studentprofile.html?key=${encodeURIComponent(studentKey)}`;
-        } else {
-            alert("Invalid password. Please try again.");
+        // Check if any student with the given email exists and if the password matches
+        for (const key in students) {
+            if (students.hasOwnProperty(key) && students[key].pwd === password) {
+                // Redirect to the student profile page with the corresponding email as a URL parameter
+                window.location.href = `loginredirect.html?email=${encodeURIComponent(email)}`;
+                return; // Exit the function after redirection
+            }
         }
-    } else {
-        alert("Student with the given email not found. Please try again.");
-    }
-});
 
+        // If no match is found, show an error message
+        alert("Invalid email or password. Please try again.");
+    });
 }
-
-
       </script>
       
        <script>
