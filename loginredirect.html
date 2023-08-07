@@ -8,7 +8,13 @@
 </head>
 <body>
     <div id="studentDetails">
+        <p>Name: <span id="name"></span></p>
+        <p>Year: <span id="year"></span></p>
+        <p>Department: <span id="department"></span></p>
+        <p>Register Number: <span id="regNumber"></span></p>
+        <p>Phone Number: <span id="phone"></span></p>
         <p>Email: <span id="email"></span></p>
+        <p>Verification Status:<span id="status"></span></p>
         <!-- Display other student details here -->
     </div>
 
@@ -26,7 +32,7 @@
       measurementId: "G-HJPSD2JERL"
         };
         
-        firebase.initializeApp(firebaseConfig);
+        /*firebase.initializeApp(firebaseConfig);
 
         // Get a reference to the database
         var database = firebase.database();
@@ -36,12 +42,37 @@
         const email = urlParams.get("email");
 
         // Display the email on the page
+        document.getElementById("email").textContent = email;*/
+        firebase.initializeApp(firebaseConfig);
+
+// Get a reference to the database
+var database = firebase.database();
+
+// Extract the email from the URL
+const urlParams = new URLSearchParams(window.location.search);
+const email = urlParams.get("email");
+
+// Get a reference to the specific student node in the database based on the email
+var studentRef = database.ref('students').orderByChild('email').equalTo(email);
+
+// Retrieve the data associated with that email
+studentRef.once('value', function(snapshot) {
+    if (snapshot.exists()) {
+        // Data exists for the given email, so update the elements on the page
+        const studentData = snapshot.val();
+        const student = Object.values(studentData)[0]; // Assuming there's only one matching email
         document.getElementById("name").textContent = student.name;
                 document.getElementById("year").textContent = student.year;
                 document.getElementById("department").textContent = student.department;
                 document.getElementById("regNumber").textContent = student.regNumber;
                 document.getElementById("phone").textContent = student.phone;
-        document.getElementById("email").textContent = email;
+                document.getElementById("email").textContent = student.email;
+                document.getElementById("status").textContent = student.status;
+    } else {
+        // No data found for the given email
+        console.log("No data found for the email: " + email);
+    }
+});
     </script>
 </body>
 </html>

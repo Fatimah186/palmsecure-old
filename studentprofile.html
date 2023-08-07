@@ -15,6 +15,7 @@
         <p>Register Number: <span id="regNumber"></span></p>
         <p>Phone Number: <span id="phone"></span></p>
         <p>Email: <span id="email"></span></p>
+        <p>Verification Status:<span id="status"></span></p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
@@ -52,7 +53,7 @@
                 document.getElementById("regNumber").textContent = student.regNumber;
                 document.getElementById("phone").textContent = student.phone;
                 document.getElementById("email").textContent = student.email;
-                // You might want to avoid displaying the password for security reasons
+                document.getElementById("status").textContent = student.status;
             }
         });
     </script>
