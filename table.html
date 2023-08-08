@@ -2,10 +2,18 @@
 <html>
 <head>
   <title>Student Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" type="text/css" href="student.css">
 </head>
 <body>
-  <h1>Student Details</h1>
+  <!-- <h1>Student Details</h1> -->
+  <div id="search-container">
+    <div class="search-input-container">
+      <input type="text" id="search-input" placeholder="Enter Register Number">
+    </div>
+    <button id="search-button" class="">Search</button>
+  </div>
+  
   <table id="students-table">
     <thead>
       <tr>
@@ -23,11 +31,103 @@
     </tbody>
   </table>
   <style>
-    body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+    
+body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    
+    h1 {
+      margin: 20px 0;
+      font-size: 32px;
+    }
+
+    /* ... Rest of your styles ... */
+
+    #search-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .search-input-container {
+      flex-grow: 1;
+      margin-right: 10px;
+      position: relative;
+    }
+    .search-input-container {
+  display: flex;
+  align-items: center;
+  border: 2px solid #ccc;
+  border-radius: 30px;
+  padding: 5px 15px;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+#search-input {
+  border: none;
+  flex-grow: 1;
+  margin-left: 10px;
+  padding: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+
+    .search-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-left: 10px;
+    }
+
+    .search-btn:hover {
+      background-color: rgba(83, 105, 118, 0.5);
+      transform: scale(1.1);
+    }
+
+    .search-icon {
+      color: white;
+      font-size: 20px;
+    }
+
+    #students-table {
+      width: 98%;
+      max-width: auto;
+      margin-top: 20px;
+      background-color: white;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 100px;
+      margin-bottom: 300px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid black;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+  
+   
 h1 {
   text-align: center;
 }
@@ -37,24 +137,55 @@ table {
   width: 100%;
 }
 
-th, td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
+ 
 
-th {
-  background-color: #f2f2f2;
-}
+  #search-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    
+  }
+
+  .search-input-container {
+    flex-grow: 1;
+    margin-right: 10px;
+    
+  }
+
+  .search-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-left: 10px;
+    }
+
+    .search-btn:hover {
+      background-color: rgba(83, 105, 118, 0.5);
+      transform: scale(1.1);
+    }
+
+    .search-icon {
+      color: white;
+      font-size: 20px;
+    }
+
 
 button {
   padding: 4px 8px;
 }
 .verified-row {
-      background-color: #C8E6C9; /* Green color */
+      background-color: rgb(187, 210, 197); /* Green color */
     }
     .not-verified-row {
-      background-color: #FFCDD2; /* Red color */
+      background-color:rgb(129, 153, 166);  /* Red color */
     }
     
   </style>
@@ -82,7 +213,9 @@ const database = firebase.database();
 
 // Get the table body
 const tableBody = document.querySelector('tbody');
-
+const searchInput = document.getElementById('search-input');
+const searchButton = document.getElementById('search-button');
+searchButton.addEventListener('click', searchStudentByRegisterNumber);
 // Load and display student details from Firebase
 database.ref('students').on('value', (snapshot) => {
   tableBody.innerHTML = '';
@@ -99,7 +232,9 @@ database.ref('students').on('value', (snapshot) => {
     const statusCell = document.createElement('td');
     const actionCell = document.createElement('td');
     const verifyButton = document.createElement('button');
+    const cancelVerifyButton = document.createElement('button');
     const deleteButton = document.createElement('button');
+    
 
     nameCell.textContent = student.name;
     yearCell.textContent = student.year;
@@ -112,7 +247,13 @@ database.ref('students').on('value', (snapshot) => {
     verifyButton.dataset.studentId = childSnapshot.key;
     verifyButton.addEventListener('click', verifyStudent);
 
-    deleteButton.textContent = 'Delete';
+
+    cancelVerifyButton.textContent = 'Cancel Verification';
+    cancelVerifyButton.dataset.studentId = childSnapshot.key;
+    cancelVerifyButton.addEventListener('click', cancelVerifyStudent);
+
+
+    deleteButton.innerHTML = '<i class="fas fa-trash"></i>'; 
     deleteButton.dataset.studentId = childSnapshot.key;
     deleteButton.addEventListener('click', deleteStudent);
     if (student.status === 'verified') {
@@ -128,8 +269,11 @@ database.ref('students').on('value', (snapshot) => {
     row.appendChild(phoneCell);
     row.appendChild(emailCell);
     row.appendChild(statusCell);
+    row.dataset.registerNumber = student.regNumber;
     actionCell.appendChild(verifyButton);
+    actionCell.appendChild(cancelVerifyButton);
     actionCell.appendChild(deleteButton);
+
     row.appendChild(actionCell);
 
     tableBody.appendChild(row);
@@ -148,17 +292,51 @@ function verifyStudent(event) {
       console.error(error);
     });
 }
+// ... Your existing code ...
+
 function deleteStudent(event) {
-      const studentId = event.target.dataset.studentId;
-      const studentRef = database.ref('students').child(studentId);
-      studentRef.remove()
-        .then(() => {
-          alert('Student deleted successfully!');
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+  const studentId = event.target.dataset.studentId;
+  const studentRef = database.ref('students').child(studentId);
+  studentRef.remove()
+    .then(() => {
+      alert('Student deleted successfully!');
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+// ... Your existing code ...
+
+function cancelVerifyStudent(event) {
+  const studentId = event.target.dataset.studentId;
+  const studentRef = database.ref('students').child(studentId);
+  studentRef.update({ status: 'pending' }) // Change status to "pending"
+    .then(() => {
+      alert('Verification cancelled successfully!');
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+function searchStudentByRegisterNumber() {
+  const registerNumber = searchInput.value.trim();
+
+  if (registerNumber !== '') {
+    const studentRow = document.querySelector(`[data-register-number="${registerNumber}"]`);
+    
+    if (studentRow) {
+      studentRow.scrollIntoView({ behavior: 'smooth' }); // Scroll to the found student
+    } else {
+      alert('Student with the provided register number not found.');
     }
+  }
+}
+
+
+// ... Your existing code ...
+
+// ... Your existing code ...
+
   </script>
 </body>
 </html>

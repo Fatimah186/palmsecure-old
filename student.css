@@ -255,3 +255,15 @@ button {
 }
 
 /* Hover effect for the button */
+body {
+  position: relative;
+}
+
+#camera-button {
+  position: relative;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
