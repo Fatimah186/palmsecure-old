@@ -37,6 +37,7 @@
         <p>Department: <span id="department"></span></p>
         <p>Register Number: <span id="regNumber"></span></p>
         <p>Phone Number: <span id="phone"></span></p>
+        <p>Bus Route: <span id="route"></span></p>
         <p>Email: <span id="email"></span></p>
         <p>Verification Status:<span id="status"></span></p>
     </div>
@@ -75,6 +76,7 @@
                 document.getElementById("department").textContent = student.department;
                 document.getElementById("regNumber").textContent = student.regNumber;
                 document.getElementById("phone").textContent = student.phone;
+                document.getElementById("route").textContent = student.route;
                 document.getElementById("email").textContent = student.email;
                 document.getElementById("status").textContent = student.status;
             }
@@ -91,6 +93,7 @@ database.ref('students').child(studentKey).once('value', (snapshot) => {
         document.getElementById("department").textContent = student.department;
         document.getElementById("regNumber").textContent = student.regNumber;
         document.getElementById("phone").textContent = student.phone;
+        document.getElementById("route").textContent = student.route;
         document.getElementById("email").textContent = student.email;
         document.getElementById("status").textContent = student.status;
 

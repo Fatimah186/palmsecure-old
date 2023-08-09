@@ -39,6 +39,7 @@
         <th>Department</th>
         <th>Register Number</th>
         <th>Phone Number</th>
+        <th>Bus Route</th>
         <th>Email</th>
         <th>Status</th>
         <th>Action</th>
@@ -340,6 +341,7 @@ database.ref('students').on('value', (snapshot) => {
     const departmentCell = document.createElement('td');
     const regNumberCell = document.createElement('td');
     const phoneCell = document.createElement('td');
+    const routeCell = document.createElement('td');
     const emailCell = document.createElement('td');
     const statusCell = document.createElement('td');
     const actionCell = document.createElement('td');
@@ -353,6 +355,7 @@ database.ref('students').on('value', (snapshot) => {
     departmentCell.textContent = student.department;
     regNumberCell.textContent = student.regNumber;
     phoneCell.textContent = student.phone;
+    routeCell.textContent = student.route;
     emailCell.textContent= student.email;
     statusCell.textContent = student.status;
     verifyButton.textContent = 'Verify';
@@ -379,6 +382,7 @@ database.ref('students').on('value', (snapshot) => {
     row.appendChild(departmentCell);
     row.appendChild(regNumberCell);
     row.appendChild(phoneCell);
+    row.appendChild(routeCell);
     row.appendChild(emailCell);
     row.appendChild(statusCell);
     row.dataset.registerNumber = student.regNumber;

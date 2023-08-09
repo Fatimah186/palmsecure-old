@@ -36,8 +36,50 @@ body {
         transform: translateY(0);
     }
 }
+/* Add your existing CSS rules here */
+
+.update-section {
+    /* margin-top: 20px; */
+    padding: 15px;
+    height: 100px;
+    width:200px;
+}
+
+#updateRouteButton {
+    background-color: rgb(83, 105, 118);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 37px;
+}
+
+#updateRouteButton:hover {
+    background-color: #0056b3;
+}
+
+#newRouteInput {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+#newRouteInput:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
 /* Style the name */
 #name {
+    font-weight: bold;
+    color: #333;
+}
+#route {
     font-weight: bold;
     color: #333;
 }

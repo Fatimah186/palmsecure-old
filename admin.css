@@ -39,13 +39,45 @@ header {
 }
 
 .container {
-    height: 600px;
+    height:600px;
     width: 500px;
     background-color: rgb(255, 255, 255);
     box-shadow: 8px 8px 20px #4f7480;
     position: relative;
-    overflow: hidden;
+    
 }
+.container {
+    opacity: 0; /* Initially set the opacity to 0 */
+    transform: translateY(100px); /* Move the container downwards */
+    transition: opacity 1s ease, transform 1s ease; /* Add transitions for smooth animation */
+  }
+  
+  .container.appear {
+    opacity: 1; /* Change opacity to 1 when the container appears */
+    transform: translateY(0); /* Reset the translation */
+  }
+  /* Apply to webkit-based browsers */
+::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Transparent background color */
+    border-radius: 5px; /* Rounded corners for the handle */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent; /* Transparent background for the track */
+}
+
+/* Apply to non-webkit browsers */
+body {
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* Apply scrollbar colors */
+    scrollbar-width: thin; /* Width of the scrollbar */
+}
+
 .logo{
     display: flex;
     align-items: center;

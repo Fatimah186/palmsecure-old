@@ -79,6 +79,13 @@
                 });
         }
         loginButton.addEventListener('click', handleLogin);
+        function animateContainer() {
+    const container = document.querySelector(".container");
+    container.classList.add("appear");
+  }
+
+  // Call the animateContainer function after a delay (e.g., 500ms)
+  setTimeout(animateContainer, 500);
     </script>
 </body>
 </html>
