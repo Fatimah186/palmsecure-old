@@ -4,10 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="loginredirect.css">
     <title>Student Profile</title>
 </head>
 <body>
-    <div id="studentDetails">
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="PALMSECURE LOGO2.png" alt="Logo" class="logo" id="logo">
+        
+        </div>
+        <div class="welcome-message" id="welcomeMessage"><Welcome>Welcome/<span id="welcomeName"></span></div>
+        <div class="welcome-container">
+            <div class="dropdown-arrow" id="dropdownArrow"></div>
+            <div class="dropdown-content" id="dropdown">
+                <a href="home.html">Home</a>
+                <a href="#">Logout</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="studentDetails" class="details">
         <p>Name: <span id="name"></span></p>
         <p>Year: <span id="year"></span></p>
         <p>Department: <span id="department"></span></p>
@@ -32,17 +48,7 @@
       measurementId: "G-HJPSD2JERL"
         };
         
-        /*firebase.initializeApp(firebaseConfig);
-
-        // Get a reference to the database
-        var database = firebase.database();
-
-        // Extract the email from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const email = urlParams.get("email");
-
-        // Display the email on the page
-        document.getElementById("email").textContent = email;*/
+       
         firebase.initializeApp(firebaseConfig);
 
 // Get a reference to the database
@@ -68,10 +74,39 @@ studentRef.once('value', function(snapshot) {
                 document.getElementById("phone").textContent = student.phone;
                 document.getElementById("email").textContent = student.email;
                 document.getElementById("status").textContent = student.status;
+                document.getElementById("welcomeName").textContent = student.name;
+                alert("User logged in successfully");
+
+                
     } else {
         // No data found for the given email
         console.log("No data found for the email: " + email);
     }
+});
+const dropdownArrow = document.getElementById("dropdownArrow");
+const dropdownContent = document.getElementById("dropdown");
+
+// Handle arrow click
+dropdownArrow.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent the body click event
+    dropdownContent.style.display = "block";
+});
+
+// Handle body click to close the dropdown
+document.body.addEventListener("click", () => {
+    dropdownContent.style.display = "none";
+});
+
+// Prevent body click event propagation when clicking inside the dropdown
+dropdownContent.addEventListener("click", (event) => {
+    event.stopPropagation();
+});
+
+const logoutOption = document.querySelector("#dropdown a[href='#']");
+logoutOption.addEventListener("click", (event) => {
+    event.preventDefault(); // Prevent default link behavior
+    alert("User logged out successfully");
+    window.location.href = "student.html"; // Redirect to student.html
 });
     </script>
 </body>

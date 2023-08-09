@@ -7,8 +7,31 @@
     <link rel="stylesheet" href="studentprofile.css">
     <title>Student Profile</title>
 </head>
+
 <body>
-    <div id="studentDetails">
+    <!-- <img src="PALMSECURE LOGO2.png" alt="Logo" class="logo"> -->
+    <!-- <ul class="menu">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul> -->
+      <div class="navbar">
+        <div class="logo-container">
+            <img src="PALMSECURE LOGO2.png" alt="Logo" class="logo" id="logo">
+        
+        </div>
+        <div class="welcome-message" id="welcomeMessage"><Welcome>Welcome/<span id="welcomeName"></span></div>
+        <div class="welcome-container">
+            <div class="dropdown-arrow" id="dropdownArrow"></div>
+            <div class="dropdown-content" id="dropdown">
+                <a href="home.html">Home</a>
+                <a href="#">Logout</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="studentDetails" class="details">
         <p>Name: <span id="name"></span></p>
         <p>Year: <span id="year"></span></p>
         <p>Department: <span id="department"></span></p>
@@ -56,6 +79,67 @@
                 document.getElementById("status").textContent = student.status;
             }
         });
+        // ... (your existing JavaScript code)
+
+// Fetch the student's details from the database
+database.ref('students').child(studentKey).once('value', (snapshot) => {
+    const student = snapshot.val();
+    if (student) {
+        // Display the student's details on the page
+        document.getElementById("name").textContent = student.name;
+        document.getElementById("year").textContent = student.year;
+        document.getElementById("department").textContent = student.department;
+        document.getElementById("regNumber").textContent = student.regNumber;
+        document.getElementById("phone").textContent = student.phone;
+        document.getElementById("email").textContent = student.email;
+        document.getElementById("status").textContent = student.status;
+
+        // Set welcome message and student's name
+        document.getElementById("welcomeName").textContent = student.name;
+    }
+});
+// ... (your existing JavaScript code)
+
+// Get references to the arrow and dropdown content
+// Get references to the arrow and dropdown content
+const dropdownArrow = document.getElementById("dropdownArrow");
+const dropdownContent = document.getElementById("dropdown");
+
+// Handle arrow click
+dropdownArrow.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent the body click event
+    dropdownContent.style.display = "block";
+});
+
+// Handle body click to close the dropdown
+document.body.addEventListener("click", () => {
+    dropdownContent.style.display = "none";
+});
+
+// Prevent body click event propagation when clicking inside the dropdown
+dropdownContent.addEventListener("click", (event) => {
+    event.stopPropagation();
+});
+
+const logoutOption = document.querySelector("#dropdown a[href='#']");
+logoutOption.addEventListener("click", (event) => {
+    event.preventDefault(); // Prevent default link behavior
+    alert("User logged out successfully");
+    window.location.href = "student.html"; // Redirect to student.html
+});
+// Get a reference to the details box
+<!-- ... (your existing HTML content) -->
+
+
+    // Get a reference to the details box
+    const detailsBox = document.querySelector(".details");
+
+    // Add a delay before adding the "appear" class to trigger the animation
+    setTimeout(() => {
+        detailsBox.classList.add("appear");
+    }, 500); // Adjust the delay as needed
+
+
     </script>
 </body>
 </html>

@@ -5,8 +5,25 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" type="text/css" href="student.css">
 </head>
+
 <body>
+  <div class="navbar">
+    <div class="logo-container">
+        <img src="PALMSECURE LOGO2.png" alt="Logo" class="logo" id="logo">
+    
+    </div>
+    <div class="welcome-message" id="welcomeMessage"><Welcome>Welcome admin!<span id="welcomeName"></span></div>
+    <div class="welcome-container">
+        <div class="dropdown-arrow" id="dropdownArrow"></div>
+        <div class="dropdown-content" id="dropdown">
+            <a href="home.html">Home</a>
+            <a href="#">Logout</a>
+        </div>
+        
+    </div>
+</div>
   <!-- <h1>Student Details</h1> -->
+  
   <div id="search-container">
     <div class="search-input-container">
       <input type="text" id="search-input" placeholder="Enter Register Number">
@@ -40,6 +57,8 @@ body {
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow-y: auto;
+      margin-top: 50px;
     }
 
     
@@ -56,7 +75,100 @@ body {
       justify-content: center;
       margin-top: 20px;
     }
+    .menu {
+    position: absolute;
+    top: 10px;
+    /* right: 3px; */
+    margin-left: 970px;
+    list-style: none;
+    display: flex;
+    gap: 50px;
+}
 
+.menu li a {
+    text-decoration: none;
+    color: #333;
+}
+.menu li a:hover{
+    color: rgb(95, 133, 146);
+  }
+  /* studentprofile.css */
+/* ... (your existing styles) */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    height: 40px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.welcome-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.dropdown-arrow {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid black;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.welcome-container:hover .dropdown-content {
+    transform: scaleY(1);
+}
     .search-input-container {
       flex-grow: 1;
       margin-right: 10px;
@@ -113,7 +225,7 @@ body {
       background-color: white;
       box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
       border-radius: 100px;
-      margin-bottom: 300px;
+      
     }
 
     th, td {
@@ -319,19 +431,56 @@ function cancelVerifyStudent(event) {
     });
 }
 function searchStudentByRegisterNumber() {
-  const registerNumber = searchInput.value.trim();
+      // Reset the display for new searches
+      tableBody.querySelectorAll('tr').forEach((row) => {
+        row.style.display = '';
+      });
 
-  if (registerNumber !== '') {
-    const studentRow = document.querySelector(`[data-register-number="${registerNumber}"]`);
-    
-    if (studentRow) {
-      studentRow.scrollIntoView({ behavior: 'smooth' }); // Scroll to the found student
-    } else {
-      alert('Student with the provided register number not found.');
+      const registerNumber = searchInput.value.trim();
+
+      if (registerNumber !== '') {
+        let found = false;
+
+        tableBody.querySelectorAll('tr').forEach((row) => {
+          if (row.dataset.registerNumber === registerNumber) {
+            row.style.display = ''; // Show the row
+            row.scrollIntoView({ behavior: 'smooth' }); // Scroll to the found student
+            found = true;
+          } else {
+            row.style.display = 'none'; // Hide other rows
+          }
+        });
+
+        if (!found) {
+          alert('Student with the provided register number not found.');
+        }
+      }
     }
-  }
-}
 
+const dropdownArrow = document.getElementById("dropdownArrow");
+const dropdownContent = document.getElementById("dropdown");
+
+// Handle arrow click
+dropdownArrow.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent the body click event
+    dropdownContent.style.display = "block";
+});
+
+// Handle body click to close the dropdown
+document.body.addEventListener("click", () => {
+    dropdownContent.style.display = "none";
+});
+
+// Prevent body click event propagation when clicking inside the dropdown
+dropdownContent.addEventListener("click", (event) => {
+    event.stopPropagation();
+});
+const logoutOption = document.querySelector("#dropdown a[href='#']");
+logoutOption.addEventListener("click", (event) => {
+    event.preventDefault(); // Prevent default link behavior
+    alert("User logged out successfully");
+    window.location.href = "student.html"; // Redirect to student.html
+});
 
 // ... Your existing code ...
 
