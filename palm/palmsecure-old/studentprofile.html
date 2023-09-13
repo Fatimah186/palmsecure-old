@@ -1,0 +1,148 @@
+<!-- studentprofile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="studentprofile.css">
+    <title>Student Profile</title>
+</head>
+
+<body>
+    <!-- <img src="PALMSECURE LOGO2.png" alt="Logo" class="logo"> -->
+    <!-- <ul class="menu">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul> -->
+      <div class="navbar">
+        <div class="logo-container">
+            <img src="PALMSECURE LOGO2.png" alt="Logo" class="logo" id="logo">
+        
+        </div>
+        <div class="welcome-message" id="welcomeMessage"><Welcome>Welcome/<span id="welcomeName"></span></div>
+        <div class="welcome-container">
+            <div class="dropdown-arrow" id="dropdownArrow"></div>
+            <div class="dropdown-content" id="dropdown">
+                <a href="home.html">Home</a>
+                <a href="#">Logout</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="studentDetails" class="details">
+        <p>Name: <span id="name"></span></p>
+        <p>Year: <span id="year"></span></p>
+        <p>Department: <span id="department"></span></p>
+        <p>Register Number: <span id="regNumber"></span></p>
+        <p>Phone Number: <span id="phone"></span></p>
+        <p>Bus Route: <span id="route"></span></p>
+        <p>Email: <span id="email"></span></p>
+        <p>Verification Status:<span id="status"></span></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyAk0foljioWF7Yde0GihotbmzW_bUxLPlw",
+      authDomain: "registrationform-e4460.firebaseapp.com",
+      databaseURL: "https://registrationform-e4460-default-rtdb.firebaseio.com",
+      projectId: "registrationform-e4460",
+      storageBucket: "registrationform-e4460.appspot.com",
+      messagingSenderId: "899025377950",
+      appId: "1:899025377950:web:d9d3fb4b97edb022aab98f",
+      measurementId: "G-HJPSD2JERL"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the database
+        var database = firebase.database();
+
+        // Extract the student's key from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentKey = urlParams.get("key");
+        const email = urlParams.get("email");
+
+        // Fetch the student's details from the database
+        database.ref('students').child(studentKey).once('value', (snapshot) => {
+            const student = snapshot.val();
+            if (student) {
+                // Display the student's details on the page
+                document.getElementById("name").textContent = student.name;
+                document.getElementById("year").textContent = student.year;
+                document.getElementById("department").textContent = student.department;
+                document.getElementById("regNumber").textContent = student.regNumber;
+                document.getElementById("phone").textContent = student.phone;
+                document.getElementById("route").textContent = student.route;
+                document.getElementById("email").textContent = student.email;
+                document.getElementById("status").textContent = student.status;
+            }
+        });
+        // ... (your existing JavaScript code)
+
+// Fetch the student's details from the database
+database.ref('students').child(studentKey).once('value', (snapshot) => {
+    const student = snapshot.val();
+    if (student) {
+        // Display the student's details on the page
+        document.getElementById("name").textContent = student.name;
+        document.getElementById("year").textContent = student.year;
+        document.getElementById("department").textContent = student.department;
+        document.getElementById("regNumber").textContent = student.regNumber;
+        document.getElementById("phone").textContent = student.phone;
+        document.getElementById("route").textContent = student.route;
+        document.getElementById("email").textContent = student.email;
+        document.getElementById("status").textContent = student.status;
+
+        // Set welcome message and student's name
+        document.getElementById("welcomeName").textContent = student.name;
+    }
+});
+// ... (your existing JavaScript code)
+
+// Get references to the arrow and dropdown content
+// Get references to the arrow and dropdown content
+const dropdownArrow = document.getElementById("dropdownArrow");
+const dropdownContent = document.getElementById("dropdown");
+
+// Handle arrow click
+dropdownArrow.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent the body click event
+    dropdownContent.style.display = "block";
+});
+
+// Handle body click to close the dropdown
+document.body.addEventListener("click", () => {
+    dropdownContent.style.display = "none";
+});
+
+// Prevent body click event propagation when clicking inside the dropdown
+dropdownContent.addEventListener("click", (event) => {
+    event.stopPropagation();
+});
+
+const logoutOption = document.querySelector("#dropdown a[href='#']");
+logoutOption.addEventListener("click", (event) => {
+    event.preventDefault(); // Prevent default link behavior
+    alert("User logged out successfully");
+    window.location.href = "student.html"; // Redirect to student.html
+});
+// Get a reference to the details box
+<!-- ... (your existing HTML content) -->
+
+
+    // Get a reference to the details box
+    const detailsBox = document.querySelector(".details");
+
+    // Add a delay before adding the "appear" class to trigger the animation
+    setTimeout(() => {
+        detailsBox.classList.add("appear");
+    }, 500); // Adjust the delay as needed
+
+
+    </script>
+</body>
+</html>

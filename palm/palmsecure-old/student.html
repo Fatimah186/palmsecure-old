@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Palm secure</title>
+  <link rel="stylesheet" href="student.css">
+</head>
+
+<body>
+
+  <html>
+
+  
+  <body>
+    
+    <div class="logo">
+      <img src="PALMSECURE LOGO2.png" alt="Logo">
+  </div>
+  
+      <ul class="menu">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    
+  </body>
+
+  </html>
+  <!-- container div -->
+  <div class="container">
+
+    <!-- container div -->
+    <!-- upper button section to select
+            the login or signup form -->
+    <div class="slider"></div>
+    <div class="btn">
+      <button class="login">Login</button>
+      <button class="signup">Signup</button>
+    </div>
+    <!-- Form section that contains the
+            login and the signup form -->
+    <div class="form-section">
+
+      <!-- login form -->
+      <form id="loginForm">
+        <div class="login-box">
+          <input type="email" class="email ele" placeholder="youremail@example.com" name="username" required>
+          <input type="password" class="password ele" placeholder="password" name="password" required>
+          <button type="button" id="loginBtn"  class="clkbtn" onclick="loginUser()">Login</button>
+          <a href="#" class="pwd" id="forgotPasswordLink">Forgot Password?</a>
+        </div>
+      </form>
+      <!-- signup form -->
+
+      <div class="signup-box" >
+
+        <input type="text" class="name ele" placeholder="Enter your name" id="name">
+        <input type="text" class="department ele" placeholder="Department" id="department">
+        <input type="text" class="year ele" placeholder="Year" id="year">
+        <input type="text" class="registerNumber ele" placeholder="Register Number" id="regNumber">
+        <input type="text" class="route ele" placeholder="Bus Route" id="route">
+        <input type="tel" class="phoneNumber ele" placeholder="Phone Number" id="phoneNumber">
+        <input type="email" id="email" class="email ele" placeholder="youremail@example.com">
+        <input type="password" class="password ele" placeholder="password" id="pwd">
+        <!-- <input type="password" class="password ele" placeholder="confirm password" id="psw"> -->
+
+      
+        <button type="button" class="clkbtn" onclick="addStudent()">Register</button>
+        </div>
+      </div>
+      <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+      <script >
+        var firebaseConfig = {
+          apiKey: "AIzaSyAk0foljioWF7Yde0GihotbmzW_bUxLPlw",
+      authDomain: "registrationform-e4460.firebaseapp.com",
+      databaseURL: "https://registrationform-e4460-default-rtdb.firebaseio.com",
+      projectId: "registrationform-e4460",
+      storageBucket: "registrationform-e4460.appspot.com",
+      messagingSenderId: "899025377950",
+      appId: "1:899025377950:web:d9d3fb4b97edb022aab98f",
+      measurementId: "G-HJPSD2JERL"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    
+    // Get a reference to the database
+    var database = firebase.database();
+    function checkDuplicateRegistration(regNumber) {
+          return new Promise((resolve, reject) => {
+            database.ref('students').orderByChild('regNumber').equalTo(regNumber).once('value', (snapshot) => {
+              if (snapshot.exists()) {
+                reject('Student with the same registration number already exists!');
+              } else {
+                resolve();
+              }
+            });
+          });
+        }
+        function validateEmail(email) {
+          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email);
+        }
+    // Function to add a student
+    function addStudent() {
+      var name = document.getElementById("name").value;
+      var year = document.getElementById("year").value;
+      var department = document.getElementById("department").value;
+      var regNumber = document.getElementById("regNumber").value;
+      var phone = document.getElementById("phoneNumber").value;
+      var route=document.getElementById("route").value;
+      var email = document.getElementById("email").value;
+      var pwd = document.getElementById("pwd").value;
+      
+      if (!name || !year || !department || !regNumber || !phone || !email ||!pwd||!route) {
+            alert("Please fill in all the fields.");
+            return;
+          }
+          if (!validateEmail(email)) {
+            alert("Please enter a valid email address.");
+            return;
+          }
+      // Push the student details to the database
+      checkDuplicateRegistration(regNumber)
+            .then(() => {
+              // Push the student details to the database
+              var studentsRef = database.ref("students");
+              var newStudentRef = studentsRef.push();
+              newStudentRef.set({
+                name: name,
+                year: year,
+                department: department,
+                regNumber: regNumber,
+                phone: phone,
+                route:route,
+                email:email,
+                pwd:pwd,
+                status: 'Pending'
+              })
+              .then(function() {
+                alert("Student added successfully!");
+// After the student is added successfully, redirect to studentprofile.html with the student's key
+window.location.href = `studentprofile.html?key=${encodeURIComponent(newStudentRef.key)}`;
+
+ // Redirect to another page
+              })
+              .catch(function(error) {
+                console.log("Error adding student: " + error.message);
+              });
+            })
+            .catch((error) => {
+              alert(error);
+            });
+        }
+
+      // Get a reference to the login form and the login button
+const loginForm = document.getElementById("loginForm");
+const loginBtn = document.getElementById("loginBtn");
+
+// Add an event listener to the login button
+loginBtn.addEventListener("click", function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    loginUser(); // Call the loginUser function
+});
+
+
+loginBtn.addEventListener("click", function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    loginUser(); // Call the loginUser function
+});
+
+// Add an event listener to the "Forgot Password" link
+const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+forgotPasswordLink.addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent the default link behavior
+    resetPassword();
+});
+
+// Function to reset the user's password
+function resetPassword() {
+    const email = prompt("Enter your email to reset password:");
+    alert("Password reset email sent. Please check your email.");
+}
+
+function loginUser() {
+    // Retrieve the email and password entered by the user
+    const email = document.querySelector("#loginForm input[name='username']").value;
+    const password = document.querySelector("#loginForm input[name='password']").value;
+
+    // Query the database to find a student with the matching email and password
+    database.ref('students').orderByChild('email').equalTo(email).once('value', (snapshot) => {
+        const students = snapshot.val();
+
+        // Check if any student with the given email exists and if the password matches
+        for (const key in students) {
+            if (students.hasOwnProperty(key) && students[key].pwd === password) {
+                // Redirect to the student profile page with the corresponding email as a URL parameter
+                window.location.href = `loginredirect.html?email=${encodeURIComponent(email)}`;
+                return; // Exit the function after redirection
+            }
+        }
+
+        // If no match is found, show an error message
+        alert("Invalid email or password. Please try again.");
+    });
+}
+
+
+
+      </script>
+      
+       <script>
+    //sliding
+    let signup = document.querySelector(".signup");
+    let login = document.querySelector(".login");
+    let slider = document.querySelector(".slider");
+    let formSection = document.querySelector(".form-section");
+
+    signup.addEventListener("click", () => {
+      slider.classList.add("moveslider");
+      formSection.classList.add("form-section-move");
+    });
+
+    login.addEventListener("click", () => {
+      slider.classList.remove("moveslider");
+      formSection.classList.remove("form-section-move");
+    });
+  
+  // Add this function at the end of your <script> section
+  function animateContainer() {
+    const container = document.querySelector(".container");
+    container.classList.add("appear");
+  }
+
+  // Call the animateContainer function after a delay (e.g., 500ms)
+  setTimeout(animateContainer, 500);
+function animateElements() {
+    const logo = document.querySelector(".logo");
+    const menu = document.querySelector(".menu");
+
+    
+    menu.classList.add("appear");
+  }
+
+  // Call the animateElements function after a delay (e.g., 500ms)
+  setTimeout(animateElements, 500);
+
+  </script>
+
+</body>
+
+</html>
